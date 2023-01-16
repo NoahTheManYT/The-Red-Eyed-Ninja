@@ -1,25 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
     public float moveSpeed = 5f;
+    public float sneakSpeed = 2f;
+    private Rigidbody2D rb;
 
-    public Rigidbody2D rb;
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
-    Vector2 movement;
-
-    // Update is called once per frame
     void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.x = Input.GetAxisRaw("Vertical");
-    }
-    
-    void FixedUpdate()
-    {
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        float moveX = Input.GetAxis("Horizontal");
+        float moveY = Input.GetAxis("Vertical");
+        Vector2 movement = new Vector2(moveX, moveY);
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            rb.velocity = movement * sneakSpeed;
+        }
+        else
+        {
+            rb.velocity = movement * moveSpeed;
+        }
     }
 }
